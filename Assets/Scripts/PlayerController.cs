@@ -8,11 +8,12 @@ public class PlayerController : MonoBehaviour
     public float jumpHeight = 0.4f;
     public float gravity = 9.81f;
     public float airControl = 10f;
+    public GameObject jumpEffect;
 
     Vector3 input;
     Vector3 moveDirection;
     CharacterController controller;
-    bool playedLandingEffect = false;
+    bool hasLanded = false;
 
     void Start()
     {
@@ -32,10 +33,10 @@ public class PlayerController : MonoBehaviour
         if (controller.isGrounded)
         {
             // landing particle effects
-            if (!playedLandingEffect)
+            if (!hasLanded)
             {
-                // play particle effect
-                playedLandingEffect = true;
+                PlayJumpEffect();
+                hasLanded = true;
             }
 
             moveDirection = input;
@@ -44,7 +45,8 @@ public class PlayerController : MonoBehaviour
             if (Input.GetButton("Jump"))
             {
                 moveDirection.y = Mathf.Sqrt(2 * jumpHeight * gravity);
-                playedLandingEffect = false;
+                PlayJumpEffect();
+                hasLanded = false;
             }
             else
             {
@@ -60,5 +62,10 @@ public class PlayerController : MonoBehaviour
 
         moveDirection.y -= gravity * Time.deltaTime;
         controller.Move(moveDirection * speed * Time.deltaTime);
+    }
+
+    void PlayJumpEffect()
+    {
+        if (jumpEffect) Instantiate(jumpEffect, transform.position, transform.rotation);
     }
 }
