@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     Vector3 input;
     Vector3 moveDirection;
     CharacterController controller;
+    bool playedLandingEffect = false;
 
     void Start()
     {
@@ -25,18 +26,25 @@ public class PlayerController : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
 
         // input vector
-
         input = transform.right * moveHorizontal + transform.forward * moveVertical;
         input.Normalize();
 
         if (controller.isGrounded)
         {
+            // landing particle effects
+            if (!playedLandingEffect)
+            {
+                // play particle effect
+                playedLandingEffect = true;
+            }
+
             moveDirection = input;
             // jump
 
             if (Input.GetButton("Jump"))
             {
                 moveDirection.y = Mathf.Sqrt(2 * jumpHeight * gravity);
+                playedLandingEffect = false;
             }
             else
             {
