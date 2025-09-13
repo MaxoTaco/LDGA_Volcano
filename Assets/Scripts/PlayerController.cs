@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     CharacterController controller;
     bool hasLanded = false;
 
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -66,6 +67,7 @@ public class PlayerController : MonoBehaviour
 
     void PlayJumpEffect()
     {
-        if (jumpEffect) Instantiate(jumpEffect, transform.position, transform.rotation);
+        Vector3 offset = new Vector3(transform.position.x, transform.position.y - 1, transform.position.z);
+        Destroy(Instantiate(jumpEffect, offset, transform.rotation), 5f);
     }
 }
