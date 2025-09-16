@@ -9,16 +9,20 @@ public class PlayerController : MonoBehaviour
     public float gravity = 9.81f;
     public float airControl = 10f;
     public GameObject jumpEffect;
+    public AudioClip jumpSound; // https://pixabay.com/sound-effects/cartoon-jump-6462/
+    public AudioClip landSound; // https://pixabay.com/sound-effects/land2-43790/
 
     Vector3 input;
     Vector3 moveDirection;
     CharacterController controller;
+    AudioSource audioSource;
     bool hasLanded = false;
 
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        audioSource = GetComponentInChildren<AudioSource>();
     }
 
     void Update()
@@ -37,6 +41,7 @@ public class PlayerController : MonoBehaviour
             if (!hasLanded)
             {
                 PlayJumpEffect();
+                audioSource.PlayOneShot(landSound);
                 hasLanded = true;
             }
 
@@ -47,6 +52,7 @@ public class PlayerController : MonoBehaviour
             {
                 moveDirection.y = Mathf.Sqrt(2 * jumpHeight * gravity);
                 PlayJumpEffect();
+                audioSource.PlayOneShot(jumpSound);
                 hasLanded = false;
             }
             else
